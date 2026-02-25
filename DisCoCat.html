@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DisCoCat — Mathematical Prerequisites Map</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: #0f0f1a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    padding: 22px 32px 14px;
+    border-bottom: 1px solid #1e2035;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1030 100%);
+  }
+  header .eyebrow {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #6366f1;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  header h1 {
+    font-size: 21px;
+    font-weight: normal;
+    color: #e2e8f0;
+  }
+  header p {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #64748b;
+  }
+
+  .main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    height: calc(100vh - 80px);
+  }
+
+  /* ---- Graph pane ---- */
+  #graph-pane {
+    flex: 0 0 55%;
+    position: relative;
+    padding: 12px;
+    overflow: hidden;
+  }
+  #graph-pane svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .node-group { cursor: pointer; }
+
+  /* ---- Info pane ---- */
+  #info-pane {
+    flex: 0 0 45%;
+    border-left: 1px solid #1e2035;
+    padding: 26px 24px;
+    overflow-y: auto;
+    background: #0c0c18;
+  }
+
+  #info-pane .placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    opacity: 0.55;
+  }
+  #info-pane .placeholder .sub {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #475569;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  #info-pane .placeholder p {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+  .legend { margin-top: 18px; }
+  .legend .leg-title {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #475569;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+  .leg-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .leg-item span { font-size: 12px; color: #64748b; }
+
+  /* Detail view */
+  #detail { display: none; }
+  #detail .eyebrow {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+  #detail h2 {
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 8px;
+  }
+  #detail .tagline {
+    font-size: 13px;
+    color: #94a3b8;
+    font-style: italic;
+    border-left-width: 3px;
+    border-left-style: solid;
+    padding-left: 12px;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  #detail pre {
+    font-size: 12.5px;
+    line-height: 1.9;
+    color: #cbd5e1;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: transparent;
+  }
+  .related {
+    margin-top: 22px;
+  }
+  .related .rel-title {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #475569;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .rel-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .rel-chip {
+    padding: 3px 10px;
+    border-radius: 20px;
+    border-width: 1px;
+    border-style: solid;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    transition: opacity 0.15s;
+  }
+  .rel-chip:hover { opacity: 0.75; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Mathematical Prerequisites</div>
+  <h1>DisCoCat &mdash; Concept Road Map</h1>
+  <p>Coecke, Sadrzadeh &amp; Clark (2010) &nbsp;&bull;&nbsp; Click any node to read its explanation</p>
+</header>
+
+<div class="main">
+  <div id="graph-pane">
+    <svg id="svg" viewBox="0 0 100 108" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+  <div id="info-pane">
+    <div class="placeholder" id="placeholder">
+      <div class="sub">How to use</div>
+      <p>Click any node in the graph to read its mathematical definition and intuitive explanation.</p>
+      <p>The graph flows from foundational concepts (top) toward the DisCoCat framework (bottom). Edges show which concepts build on each other.</p>
+      <div class="legend">
+        <div class="leg-title">Reading Order</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#e8a838"></div><span>Grammar Formalisms</span></div>
+        <div class="leg-item"><div class="leg-dot" style="background:#4a9eff"></div><span>Vector Semantics</span></div>
+        <div class="leg-item"><div class="leg-dot" style="background:#c084fc"></div><span>Category Theory</span></div>
+        <div class="leg-item"><div class="leg-dot" style="background:#f472b6"></div><span>Compact / Frobenius Structures</span></div>
+        <div class="leg-item"><div class="leg-dot" style="background:#34d399"></div><span>DisCoCat Framework</span></div>
+        <div class="leg-item"><div class="leg-dot" style="background:#94a3b8"></div><span>Supporting Tools &amp; Connections</span></div>
+      </div>
+    </div>
+    <div id="detail"></div>
+  </div>
+</div>
+
+<script>
+const concepts = [
+  {
+    id: "pregroup", label: "Pregroup Grammar", x: 32, y: 12, color: "#e8a838",
+    short: "A grammar formalism using ordered types and algebraic reductions",
+    explanation: `A pregroup is an ordered algebraic structure (P, ≤, ·, 1, (-)ˡ, (-)ʳ) where:
+
+• Every element p has a LEFT adjoint pˡ and a RIGHT adjoint pʳ
+• Key reductions hold:  p · pˡ ≤ 1  and  pˡ · p ≤ 1  (same for right)
+• This lets you "cancel" adjacent types, like fractions
+
+In linguistics (Lambek 1999): every word gets a TYPE.
+For example:
+  - "runs" has type  nˡ·s  (needs a noun on the left → produces a sentence)
+  - "loves" has type  nˡ·s·nʳ  (needs noun left AND right)
+
+A sentence is GRAMMATICAL if multiplying all types left-to-right
+reduces to the base type  s  (sentence).
+
+Simple example:  "John runs"
+  John : n       runs : nˡ · s
+  ───────────────────────────
+  n · nˡ · s  →  1 · s  =  s   ✓ Grammatical!
+
+The key insight: grammar checking = algebraic simplification.
+The same structure that makes "John runs" grammatical
+will later tell us HOW to compose the meanings of John and runs.`
+  },
+  {
+    id: "typelogic", label: "Type-Logical Grammar", x: 68, y: 12, color: "#e8a838",
+    short: "Treating grammar as a logical deduction system (Lambek calculus)",
+    explanation: `Type-logical grammar (Lambek 1958, refined 1999) treats grammar as LOGIC:
+
+• Words are assigned TYPES (also called categories)
+• A sentence parses if its types compose to the sentence type  s
+• Every derivation is a formal proof
+
+The TYPES form a structured system:
+  Basic types:    n (noun),  s (sentence),  np (noun phrase)
+  Complex types:  A/B  means "needs B on the right to give A"
+                  A\\B  means "needs A on the left to give B"
+
+Example derivation for "the cat sees the mouse":
+
+  the:np/n   cat:n   sees:(np\\s)/np   the:np/n   mouse:n
+  ─────────────────  ─────────────────────────────────────
+       np                  (np\\s)/np  ·  np
+                           ────────────────────
+                                  np\\s
+  ─────────────────────────────────────────────────────────
+                              s
+
+THIS IS THE SYNTAX SIDE.
+The paper's big move: give this structure a SEMANTICS
+using vector spaces, connected via category theory.`
+  },
+  {
+    id: "vectorspace", label: "Vector Space Semantics", x: 50, y: 30, color: "#4a9eff",
+    short: "Words as vectors in high-dimensional spaces (distributional semantics)",
+    explanation: `DISTRIBUTIONAL HYPOTHESIS (Harris 1954):
+"Words that occur in similar contexts have similar meanings"
+
+So:  meaning(word)  ≈  the contexts it appears in
+
+In practice (Word2Vec, GloVe, fastText, etc.):
+• Build a large corpus (billions of words)
+• For each word, record co-occurrences with context words
+• Learn a dense LOW-DIMENSIONAL VECTOR per word
+  e.g., "cat" → (0.21, -0.14, 0.87, ...) in ℝ³⁰⁰
+
+SIMILARITY = geometric proximity:
+  cos("king" - "man" + "woman",  "queen")  ≈  1   ← famous example
+  Cosine distance, dot product capture semantic relatedness
+
+THE PROBLEM for sentences:
+• We know how to get vectors for WORDS ✓
+• But how do we get a vector for a SENTENCE?
+• Simple approaches (sum/average) lose word order:
+
+  "The dog bites the man"  and  "The man bites the dog"
+  → same word-sum vector!  But very different meanings.
+
+This is the core problem DisCoCat solves:
+use the GRAMMATICAL STRUCTURE to guide how word vectors compose.`
+  },
+  {
+    id: "tensor", label: "Tensor Products", x: 50, y: 47, color: "#4a9eff",
+    short: "The mathematical tool for combining vector spaces",
+    explanation: `The TENSOR PRODUCT (⊗) combines two vector spaces into one:
+
+  If  V = ℝⁿ  and  W = ℝᵐ,  then  V ⊗ W  =  ℝⁿˣᵐ
+
+Concretely:
+  v = (1, 2) ∈ ℝ²,   w = (3, 4) ∈ ℝ²
+  v ⊗ w = (1·3, 1·4, 2·3, 2·4) = (3, 4, 6, 8)  ∈ ℝ⁴
+
+For language — WHY this matters:
+  A transitive verb relates SUBJECT to OBJECT.
+  It lives in the space  N ⊗ S ⊗ N
+  (subject-noun space ⊗ sentence space ⊗ object-noun space)
+  → a verb tensor encodes HOW subject and object interact.
+
+DUAL SPACE  V*:
+  For  V = ℝⁿ,  the dual  V*  also  = ℝⁿ  (finite-dimensional case)
+  But conceptually: V* contains LINEAR MAPS from V to ℝ
+  A vector  φ ∈ V*  "eats" a vector  v ∈ V  → returns a number φ(v)
+
+  This is the inner product / dot product you know.
+
+THE KEY CONNECTION:
+  The "reductions" in pregroup grammar  (p · pˡ → 1)
+  become TENSOR CONTRACTIONS in vector algebra.
+  Both operations "cancel" a matched pair and reduce dimensionality.
+  This is not a coincidence — it's the paper's central insight.`
+  },
+  {
+    id: "category", label: "Category Theory Basics", x: 50, y: 63, color: "#c084fc",
+    short: "Objects, morphisms, and composition — the language of mathematical structure",
+    explanation: `A CATEGORY  C  consists of:
+  • Objects:     A, B, C, ...
+  • Morphisms:   f : A → B   (arrows between objects)
+  • Composition: if  f : A→B  and  g : B→C,  then  g∘f : A→C
+  • Identities:  for each A, there's  id_A : A → A
+
+Must satisfy:
+  Associativity:  h∘(g∘f) = (h∘g)∘f
+  Identity laws:  f∘id_A = f = id_B∘f
+
+EXAMPLES:
+  Set    — objects = sets,          morphisms = functions
+  Vect_K — objects = vector spaces, morphisms = linear maps
+  Pregroup — objects = types (n, s, ...), morphisms = reductions (≤)
+
+A FUNCTOR  F : C → D  is a "structure-preserving map":
+  • Objects → objects:  F(A) in D  for each A in C
+  • Morphisms → morphisms:  F(f) : F(A) → F(B)
+  • Preserves composition:  F(g∘f) = F(g)∘F(f)
+  • Preserves identities:   F(id_A) = id_{F(A)}
+
+THE KEY IDEA IN THE PAPER:
+  Grammar (pregroup) and Vector Spaces (Vect) are BOTH categories.
+  A meaning assignment = a FUNCTOR between them.
+  Because functors preserve structure,
+  compositionality of meaning is AUTOMATICALLY guaranteed!`
+  },
+  {
+    id: "monoidal", label: "Monoidal Categories", x: 28, y: 78, color: "#c084fc",
+    short: "Categories equipped with a 'tensor product' on objects",
+    explanation: `A MONOIDAL CATEGORY  (C, ⊗, I)  is a category with extra structure:
+  • A tensor product  ⊗ : C × C → C  (puts objects "side by side")
+  • A unit object  I  (like "1" for multiplication)
+  • Natural isomorphisms:
+      (A⊗B)⊗C  ≅  A⊗(B⊗C)   (associativity)
+      I⊗A  ≅  A  ≅  A⊗I      (unit laws)
+
+Think of it as: you can compose morphisms SEQUENTIALLY (one after another)
+AND also run them IN PARALLEL (side by side).
+
+EXAMPLES:
+  Vect_K    — ⊗ of vector spaces, unit I = K (the base field, e.g., ℝ)
+  Pregroup  — ⊗ = type concatenation:  n · (nˡ·s),  unit = empty type 1
+
+DIAGRAMMATIC CALCULUS:
+  In monoidal categories, morphisms can be drawn as "string diagrams":
+    Objects   = wires (vertical lines)
+    Morphisms = boxes with input/output wires attached
+    ⊗         = diagrams placed side by side (horizontal)
+    Composition = wires connected top-to-bottom
+
+  Complex tensor equations become simple, readable pictures.
+  This is the visual language the paper uses throughout.`
+  },
+  {
+    id: "compact", label: "Compact Closed Categories", x: 72, y: 78, color: "#f472b6",
+    short: "Monoidal categories where every object has a 'dual' with cup/cap morphisms",
+    explanation: `A COMPACT CLOSED CATEGORY is a monoidal category where:
+  Every object  A  has a DUAL  A*  with two special morphisms:
+  
+  η_A : I  →  A* ⊗ A    (unit / "cup"  ∪)
+  ε_A : A  ⊗  A*  →  I  (counit / "cap"  ∩)
+
+  Satisfying the SNAKE EQUATIONS:
+  (ε_A ⊗ id_A) ∘ (id_A ⊗ η_A)   = id_A
+  (id_{A*} ⊗ ε_A) ∘ (η_A ⊗ id_{A*}) = id_{A*}
+
+VISUALLY (string diagrams):
+  η is drawn as a ∪ (wire bending upward)
+  ε is drawn as a ∩ (wire bending downward)
+  Snake equations = you can "straighten out" bent wires
+
+WHY THIS IS POWERFUL:
+  Information can "flow backwards" along a dual wire!
+  A verb can reach BOTH its subject and object
+  and combine their meanings through the cup/cap structure.
+
+EXAMPLES of compact closed categories:
+  FVect  — finite-dimensional vector spaces  (KEY one for NLP)
+  Rel    — sets and relations
+  Any pregroup  — adjoints pˡ, pʳ play the role of duals A*
+
+THE MIRACLE:
+  Pregroups AND FVect are BOTH compact closed.
+  There is a structure-preserving map (functor) between them.
+  This is the mathematical foundation of the whole paper.`
+  },
+  {
+    id: "stringdiagram", label: "String Diagrams", x: 50, y: 78, color: "#94a3b8",
+    short: "A visual / graphical calculus for morphisms in monoidal categories",
+    explanation: `STRING DIAGRAMS are a complete graphical language for monoidal categories.
+Proved equivalent to algebraic notation by Joyal & Street (1991).
+
+Basic rules:
+  Objects    = labelled vertical wires (flowing downward)
+  Morphisms  = boxes connecting input wires (top) to output wires (bottom)
+  ⊗          = diagrams placed side by side
+  Composition = wire from output of one box into input of next
+
+For COMPACT CLOSED categories, add:
+  ∪  (cup)  = wire bending upward  =  η : I → A* ⊗ A
+  ∩  (cap)  = wire bending downward = ε : A ⊗ A* → I
+  Snake equations = you can "straighten" bent wires
+
+EXAMPLE — "Alice loves Bob":
+
+  [Alice]   [loves]         [Bob]
+    |       |      |          |
+    n    n*⊗s⊗n*             n
+    └────┘          └─────────┘
+      ε_n              ε_n
+         \            /
+              s
+
+The two  ε  (caps) contract the  n/n*  wire pairs.
+What remains: a single wire of type  s.
+The resulting vector IS the sentence meaning.
+
+This is IDENTICAL to the pregroup reduction —
+just drawn as a picture instead of written as algebra.
+String diagrams make categorical computation VISUAL and intuitive.`
+  },
+  {
+    id: "frobenius", label: "Frobenius Algebras", x: 28, y: 93, color: "#f472b6",
+    short: "A structure allowing 'copying' and 'deleting' of information within a category",
+    explanation: `A FROBENIUS ALGEBRA in a monoidal category is an object  A  with four morphisms:
+  
+  μ : A⊗A → A   (multiplication / "merge" — two wires become one)
+  η : I   → A   (unit — wire from nothing)
+  δ : A   → A⊗A (comultiplication / "copy" — one wire splits in two)
+  ε : A   → I   (counit / "delete" — wire disappears)
+
+  Satisfying compatibility: the algebra (μ, η) and coalgebra (δ, ε) interact
+  via the Frobenius law:  (id⊗μ)∘(δ⊗id) = δ∘μ = (μ⊗id)∘(id⊗δ)
+
+WHY DOES THIS APPEAR IN NLP?
+
+NOUNS get Frobenius structure because in a sentence,
+a noun's meaning must be "shared" in multiple directions:
+  "The cat chases the mouse"
+  → "cat" influences the verb meaning (what kind of chasing?)
+  → AND "cat" remains available as the subject
+
+COPYING  δ  allows a noun vector to go to two places at once.
+Drawn as: a wire splitting into a Y shape.
+
+SPECIAL CASE — COMMUTATIVE Frobenius algebra:
+  μ ∘ σ = μ  (where σ is the swap/symmetry morphism)
+  Used for "bag of words" — order-independent composition.
+
+This gives the paper a precise mechanism for how subject and object
+vectors get "plugged into" the verb tensor —
+the verb has a slot for each, Frobenius provides the plug.`
+  },
+  {
+    id: "discocat", label: "DisCoCat Framework", x: 72, y: 93, color: "#34d399",
+    short: "The full Coecke–Sadrzadeh–Clark (2010) compositional distributional model",
+    explanation: `DisCoCat = DIStributional COmpositional CATegorical model
+(Coecke, Sadrzadeh, Clark — 2010)
+
+THE CORE THEOREM (informal):
+  There exists a functor  F : Pregroup → FVect  such that:
+  F(grammatical derivation)  =  compositional meaning computation
+
+CONCRETELY — how it works:
+
+1. Assign a vector space to each basic type:
+     n  (noun)      →   N  =  ℝⁿ
+     s  (sentence)  →   S  =  ℝˢ
+
+2. Compound types get tensor products:
+     nˡ·s·nʳ  (transitive verb type)  →   N* ⊗ S ⊗ N*
+
+3. Each WORD gets a vector or tensor in its type's space:
+     "John"   ∈  N                         (a noun vector)
+     "runs"   ∈  N* ⊗ S  =  Hom(N, S)    (a linear map N→S)
+     "loves"  ∈  N* ⊗ S ⊗ N*             (a bilinear map)
+
+4. SENTENCE MEANING computed by:
+     a) Start with word tensors side by side
+     b) Follow the grammatical reduction (cups / ε contractions)
+     c) Contract tensors along each reduction step
+   Result: a VECTOR in  S  = the sentence meaning!
+
+THE BEAUTY:
+  • Syntax (grammar structure) tells you HOW to compose
+  • Semantics (vectors) tells you WHAT is being composed
+  • The functor guarantees they are COMPATIBLE
+
+  "The meaning of a sentence is determined by
+   the meanings of its words AND its grammatical structure"
+   → This is COMPOSITIONALITY, made mathematically precise.
+
+CONNECTION TO FREYA / DATA LAKES:
+  FREYA profiles are hand-crafted "meaning vectors" for columns.
+  A join operation is like a verb: it takes two column meanings
+  and produces a new combined meaning.
+  Could the join structure be formalized as a functor
+  from a "data schema category" into a metric vector space?
+  That is the question worth asking Gergő!`
+  },
+  {
+    id: "quantum", label: "Quantum Mechanics Connection", x: 50, y: 108, color: "#94a3b8",
+    short: "Why the same compact closed / Frobenius structure also describes quantum systems",
+    explanation: `This may seem surprising, but QUANTUM MECHANICS and LANGUAGE
+share the same categorical mathematical skeleton.
+
+In quantum mechanics (Dirac notation):
+  States:       |ψ⟩  ∈  H    (Hilbert space — a vector space)
+  Dual states:  ⟨ψ|  ∈  H*
+  Inner product: ⟨ψ|φ⟩       — a scalar (number)
+  Outer product: |ψ⟩⟨φ|       — a linear map (operator / matrix)
+  Composite systems: H₁ ⊗ H₂  (entangled states!)
+
+THIS IS THE SAME STRUCTURE as compact closed categories:
+  η : ℂ → H* ⊗ H   corresponds to the Bell / EPR state!
+  ε : H ⊗ H* → ℂ   corresponds to measurement / inner product
+
+Frobenius algebras in quantum:
+  = "classical data structures" sitting inside quantum systems
+  = the ability to COPY and DELETE classical information
+    (which you cannot do with arbitrary quantum states — no-cloning theorem)
+
+PRACTICAL IMPLICATION:
+  Techniques from QUANTUM INFORMATION THEORY
+  (teleportation protocols, entanglement measures, ZX-calculus)
+  can be directly applied to NLP computations.
+
+NOT because language IS quantum,
+but because they are described by the SAME abstract structure.
+
+For the mathematician: the category FHilb (finite-dim Hilbert spaces)
+is compact closed with dagger structure.
+The paper's framework applies there too.
+This is what makes the mathematical language so powerful —
+one framework, many interpretations.`
+  }
+];
+
+const edges = [
+  ["pregroup","typelogic"],["pregroup","category"],["typelogic","category"],
+  ["vectorspace","tensor"],["tensor","monoidal"],["tensor","compact"],
+  ["category","monoidal"],["monoidal","compact"],["monoidal","stringdiagram"],
+  ["compact","stringdiagram"],["compact","frobenius"],["pregroup","compact"],
+  ["frobenius","discocat"],["compact","discocat"],["stringdiagram","discocat"],
+  ["vectorspace","discocat"],["compact","quantum"],["frobenius","quantum"],
+  ["quantum","discocat"]
+];
+
+// ---- Build SVG ----
+const SVG_NS = "http://www.w3.org/2000/svg";
+const svg = document.getElementById("svg");
+let selectedId = null;
+
+function mkEl(tag, attrs = {}) {
+  const el = document.createElementNS(SVG_NS, tag);
+  for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+  return el;
+}
+
+// Band backgrounds
+const bands = [
+  { y1: 3,  y2: 22,  color: "rgba(232,168,56,0.05)",  label: "GRAMMAR FORMALISMS" },
+  { y1: 22, y2: 40,  color: "rgba(74,158,255,0.05)",   label: "VECTOR SEMANTICS" },
+  { y1: 40, y2: 68,  color: "rgba(192,132,252,0.05)",  label: "ALGEBRAIC STRUCTURES" },
+  { y1: 68, y2: 88,  color: "rgba(244,114,182,0.05)",  label: "COMPACT & FROBENIUS" },
+  { y1: 88, y2: 110, color: "rgba(52,211,153,0.05)",   label: "THE FRAMEWORK" },
+];
+bands.forEach(b => {
+  svg.appendChild(mkEl("rect", { x:0, y:b.y1, width:100, height:b.y2-b.y1, fill:b.color }));
+  const t = mkEl("text", { x:50, y:b.y1+2.8, "text-anchor":"middle",
+    "font-size":"1.9", fill:"rgba(255,255,255,0.10)", "font-family":"Georgia",
+    "letter-spacing":"0.4", "font-style":"italic" });
+  t.textContent = b.label;
+  svg.appendChild(t);
+});
+
+// Edge layer
+const edgeLayer = mkEl("g", { id:"edges" });
+svg.appendChild(edgeLayer);
+
+// Build edge elements (stored for highlight)
+const edgeEls = edges.map(([a, b]) => {
+  const ca = concepts.find(c => c.id === a);
+  const cb = concepts.find(c => c.id === b);
+  const line = mkEl("line", {
+    x1: ca.x, y1: ca.y + 2.8,
+    x2: cb.x, y2: cb.y - 2.8,
+    stroke: "rgba(255,255,255,0.09)",
+    "stroke-width": "0.25",
+    "stroke-dasharray": "1,1.2"
+  });
+  edgeLayer.appendChild(line);
+  return { line, a, b };
+});
+
+// Node layer
+const nodeLayer = mkEl("g", { id:"nodes" });
+svg.appendChild(nodeLayer);
+
+const nodeEls = {};
+concepts.forEach(c => {
+  const g = mkEl("g", { class:"node-group" });
+  g.style.cursor = "pointer";
+
+  // Glow ring (hidden by default)
+  const glow = mkEl("circle", { cx:c.x, cy:c.y, r:"5.5",
+    fill:"none", stroke:c.color, "stroke-width":"1.4", opacity:"0" });
+
+  // Main circle
+  const circle = mkEl("circle", { cx:c.x, cy:c.y, r:"3.4",
+    fill:"#1e2035", stroke:c.color, "stroke-width":"0.5" });
+
+  // Label — multi-word wrapping
+  const words = c.label.split(" ");
+  const textEl = mkEl("text", {
+    x: c.x, y: c.y + 5.8,
+    "text-anchor": "middle",
+    "font-size": "2.0",
+    fill: "#94a3b8",
+    "font-family": "Georgia"
+  });
+  words.forEach((word, i) => {
+    const ts = mkEl("tspan", { x: c.x, dy: i === 0 ? "0" : "2.5" });
+    ts.textContent = word;
+    textEl.appendChild(ts);
+  });
+
+  g.appendChild(glow);
+  g.appendChild(circle);
+  g.appendChild(textEl);
+  nodeLayer.appendChild(g);
+
+  nodeEls[c.id] = { g, glow, circle, textEl };
+
+  g.addEventListener("click", () => selectConcept(c.id === selectedId ? null : c.id));
+  g.addEventListener("mouseenter", () => { if (c.id !== selectedId) { glow.setAttribute("opacity","0.25"); } });
+  g.addEventListener("mouseleave", () => { if (c.id !== selectedId) { glow.setAttribute("opacity","0"); } });
+});
+
+function selectConcept(id) {
+  selectedId = id;
+  const concept = id ? concepts.find(c => c.id === id) : null;
+
+  // Update all nodes
+  concepts.forEach(c => {
+    const { glow, circle, textEl } = nodeEls[c.id];
+    const isSelected = c.id === id;
+    const isConnected = id && edges.some(([a,b]) => (a===id&&b===c.id)||(b===id&&a===c.id));
+    const isDimmed = id && !isSelected && !isConnected;
+
+    circle.setAttribute("fill", isSelected ? c.color : "#1e2035");
+    circle.setAttribute("stroke-width", isSelected ? "0.9" : "0.5");
+    glow.setAttribute("opacity", isSelected ? "0.3" : "0");
+    textEl.setAttribute("fill", isSelected ? c.color : isConnected ? c.color : "#94a3b8");
+
+    const opacity = isDimmed ? "0.3" : "1";
+    circle.setAttribute("opacity", opacity);
+    textEl.setAttribute("opacity", opacity);
+  });
+
+  // Update edges
+  edgeEls.forEach(({ line, a, b }) => {
+    const isHighlighted = id && (a === id || b === id);
+    line.setAttribute("stroke", isHighlighted ? "#6366f1" : "rgba(255,255,255,0.09)");
+    line.setAttribute("stroke-width", isHighlighted ? "0.55" : "0.25");
+    line.setAttribute("stroke-dasharray", isHighlighted ? "none" : "1,1.2");
+  });
+
+  // Update info panel
+  const placeholder = document.getElementById("placeholder");
+  const detail = document.getElementById("detail");
+
+  if (!concept) {
+    placeholder.style.display = "flex";
+    detail.style.display = "none";
+    return;
+  }
+
+  placeholder.style.display = "none";
+  detail.style.display = "block";
+
+  // Related concepts
+  const relatedIds = edges
+    .filter(([a,b]) => a===id||b===id)
+    .map(([a,b]) => a===id?b:a);
+  const relatedConcepts = relatedIds.map(rid => concepts.find(c=>c.id===rid)).filter(Boolean);
+
+  const chips = relatedConcepts.map(rc =>
+    `<span class="rel-chip" style="border-color:${rc.color}66;color:${rc.color};"
+      onclick="selectConcept('${rc.id}')">${rc.label}</span>`
+  ).join("");
+
+  detail.innerHTML = `
+    <div class="eyebrow" style="color:${concept.color};border-color:${concept.color}44;">Concept Explanation</div>
+    <h2 style="color:${concept.color};">${concept.label}</h2>
+    <div class="tagline" style="border-color:${concept.color}66;">${concept.short}</div>
+    <pre>${concept.explanation}</pre>
+    ${relatedConcepts.length > 0 ? `
+    <div class="related">
+      <div class="rel-title">Connected Concepts</div>
+      <div class="rel-chips">${chips}</div>
+    </div>` : ""}
+  `;
+}
+</script>
+</body>
+</html>
